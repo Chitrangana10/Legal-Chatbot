@@ -1,0 +1,14 @@
+fastapi
+uvicorn
+pydantic
+pydantic-settings
+python-dotenv
+sentence-transformers
+faiss-cpu
+rank-bm25
+google-generativeai
+streamlit
+requests
+beautifulsoup4
+pytest
+
