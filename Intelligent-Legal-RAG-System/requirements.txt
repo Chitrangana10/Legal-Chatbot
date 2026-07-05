@@ -11,4 +11,5 @@ streamlit
 requests
 beautifulsoup4
 pytest
+numpy 
 
