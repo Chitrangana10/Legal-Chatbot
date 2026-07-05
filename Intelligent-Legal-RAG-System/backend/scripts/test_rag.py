@@ -14,7 +14,7 @@ from backend.app.services.rag_engine import RAGEngine
 
 
 def main() -> None:
-    """Ask a few hardcoded questions and print generated answers with sources."""
+    """Ask a few hardcoded questions and print generated answers with up to five retrieved sources."""
     questions = [
         "What is the punishment for murder?",
         "What acts amount to cheating under the IPC?",

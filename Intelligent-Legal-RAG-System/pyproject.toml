@@ -16,6 +16,8 @@ dependencies = [
     "pydantic-settings",
     "python-dotenv",
     "pytest",
+    "beautifulsoup4",
+    "rank-bm25",
 ]
 
 [tool.pytest.ini_options]
