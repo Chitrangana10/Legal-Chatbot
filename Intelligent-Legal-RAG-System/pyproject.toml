@@ -1,0 +1,26 @@
+[project]
+name = "intelligent-legal-rag-system"
+version = "0.1.0"
+description = "Production-oriented skeleton for a modular AI legal retrieval and guidance system."
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi",
+    "uvicorn",
+    "faiss-cpu",
+    "sentence-transformers",
+    "rank-bm25",
+    "together",
+    "google-generativeai",
+    "streamlit",
+    "pydantic",
+    "pydantic-settings",
+    "python-dotenv",
+    "pytest",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.setuptools.packages.find]
+include = ["backend*"]
+exclude = ["docker*", "docs*", "frontend*", "tests*"]

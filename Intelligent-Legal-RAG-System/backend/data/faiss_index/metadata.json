@@ -1,0 +1,61 @@
+{
+  "dimension": 384,
+  "metadatas": {
+    "0": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "34",
+      "section_title": "Acts done by several persons in furtherance of common intention",
+      "text": "When a criminal act is done by several persons, in furtherance of the common intention of all, each of such persons is liable for that act in the same manner as if it were done by him alone.",
+      "source_type": "statute"
+    },
+    "1": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "120B",
+      "section_title": "Punishment of criminal conspiracy",
+      "text": "Whoever is a party to a criminal conspiracy to commit an offence punishable with death, imprisonment for life or rigorous imprisonment for a term of two years or upwards, shall, where no express provision is made in this Code for the punishment of such a conspiracy, be punished in the same manner as if he had abetted such offence. Whoever is a party to a criminal conspiracy other than a criminal conspiracy to commit an offence punishable as aforesaid shall be punished with imprisonment of either description for a term not exceeding six months, or with fine or with both.",
+      "source_type": "statute"
+    },
+    "2": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "300",
+      "section_title": "Murder",
+      "text": "Except in the cases hereinafter excepted, culpable homicide is murder, if the act by which the death is caused is done with the intention of causing death, or, secondly, if it is done with the intention of causing such bodily injury as the offender knows to be likely to cause the death of the person to whom the harm is caused, or, thirdly, if it is done with the intention of causing bodily injury to any person and the bodily injury intended to be inflicted is sufficient in the ordinary course of nature to cause death, or, fourthly, if the person committing the act knows that it is so imminently dangerous that it must, in all probability, cause death, or such bodily injury as is likely to cause death, and commits such act without any excuse for incurring the risk of causing death or such injury as aforesaid. Exception 1.- When culpable homicide is not murder.- Culpable homicide is not murder if the offender, whilst deprived of the power of self-control by grave and sudden provocation, causes the death of the person who gave the provocation or causes the death of any other person by mistake or accident. Exception 2.- Culpable homicide is not murder if the offender, in the exercise in good faith of the right of private defence of person or property, exceeds the power given to him by law and causes the death of the person against whom he is exercising such right of defence without premeditation, and without any intention of doing more harm than is necessary for the purpose of such defence. Exception 3.- Culpable homicide is not murder if the offender, being a public servant or aiding a public servant acting for the advancement of public justice, exceeds the powers given to him by law, and causes death by doing an act which he, in good faith, believes to be lawful and necessary for the due discharge of his duty as such public servant and without ill-will towards the person whose death is caused. Exception 4.- Culpable homicide is not murder if it is committed without premeditation in a sudden fight in the heat of passion upon a sudden quarrel and without the offender having taken undue advantage or acted in a cruel or unusual manner. Exception 5.- Culpable homicide is not murder when the person whose death is caused, being above the age of eighteen years, suffers death or takes the risk of death with his own consent.",
+      "source_type": "statute"
+    },
+    "3": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "302",
+      "section_title": "Punishment for murder",
+      "text": "Whoever commits murder shall be punished with death, or imprisonment for life, and shall also be liable to fine.",
+      "source_type": "statute"
+    },
+    "4": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "307",
+      "section_title": "Attempt to murder",
+      "text": "Whoever does any act with such intention or knowledge, and under such circumstances that, if he by that act caused death, he would be guilty of murder, shall be punished with imprisonment of either description for a term which may extend to ten years, and shall also be liable to fine; and if hurt is caused to any person by such act, the offender shall be liable either to imprisonment for life, or to such punishment as is hereinbefore mentioned. When any person offending under this section is under sentence of imprisonment for life, he may, if hurt is caused, be punished with death.",
+      "source_type": "statute"
+    },
+    "5": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "375",
+      "section_title": "Rape",
+      "text": "A man is said to commit rape if he penetrates his penis, to any extent, into the vagina, mouth, urethra or anus of a woman or makes her to do so with him or any other person; or inserts, to any extent, any object or a part of the body, not being the penis, into the vagina, the urethra or anus of a woman or makes her to do so with him or any other person; or manipulates any part of the body of a woman so as to cause penetration into the vagina, urethra, anus or any part of body of such woman or makes her to do so with him or any other person; or applies his mouth to the vagina, anus, urethra of a woman or makes her to do so with him or any other person, under the circumstances falling under any of the following seven descriptions: First.- Against her will. Secondly.- Without her consent. Thirdly.- With her consent, when her consent has been obtained by putting her or any person in whom she is interested, in fear of death or of hurt. Fourthly.- With her consent, when the man knows that he is not her husband and that her consent is given because she believes that he is another man to whom she is or believes herself to be lawfully married. Fifthly.- With her consent when, at the time of giving such consent, by reason of unsoundness of mind or intoxication or the administration by him personally or through another of any stupefying or unwholesome substance, she is unable to understand the nature and consequences of that to which she gives consent. Sixthly.- With or without her consent, when she is under eighteen years of age. Seventhly.- When she is unable to communicate consent. Explanation 1.- For the purposes of this section, vagina shall also include labia majora. Explanation 2.- Consent means an unequivocal voluntary agreement when the woman by words, gestures or any form of verbal or non-verbal communication, communicates willingness to participate in the specific sexual act: Provided that a woman who does not physically resist to the act of penetration shall not by the reason only of that fact, be regarded as consenting to the sexual activity. Exception 1.- A medical procedure or intervention shall not constitute rape. Exception 2.- Sexual intercourse or sexual acts by a man with his own wife, the wife not being under fifteen years of age, is not rape.",
+      "source_type": "statute"
+    },
+    "6": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "415",
+      "section_title": "Cheating",
+      "text": "Whoever, by deceiving any person, fraudulently or dishonestly induces the person so deceived to deliver any property to any person, or to consent that any person shall retain any property, or intentionally induces the person so deceived to do or omit to do anything which he would not do or omit if he were not so deceived, and which act or omission causes or is likely to cause damage or harm to that person in body, mind, reputation or property, is said to cheat. Explanation.- A dishonest concealment of facts is a deception within the meaning of this section.",
+      "source_type": "statute"
+    },
+    "7": {
+      "act": "Indian Penal Code, 1860",
+      "section_number": "420",
+      "section_title": "Cheating and dishonestly inducing delivery of property",
+      "text": "Whoever cheats and thereby dishonestly induces the person deceived to deliver any property to any person, or to make, alter or destroy the whole or any part of a valuable security, or anything which is signed or sealed, and which is capable of being converted into a valuable security, shall be punished with imprisonment of either description for a term which may extend to seven years, and shall also be liable to fine.",
+      "source_type": "statute"
+    }
+  }
+}
