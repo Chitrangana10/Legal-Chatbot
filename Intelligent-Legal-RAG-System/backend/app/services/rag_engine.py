@@ -1,8 +1,6 @@
 """Orchestrate vector retrieval and Gemini-grounded legal answer generation."""
-
 from __future__ import annotations
 
-import json
 from pathlib import Path
 from typing import Any, Dict, List, Optional
 
@@ -11,6 +9,7 @@ from sentence_transformers import SentenceTransformer
 from backend.app.config import get_settings
 from backend.app.services import llm_service
 from backend.app.services.hybrid_search import HybridSearcher
+from backend.app.services.raw_corpus import load_raw_sections
 from backend.app.services.vector_store import VectorStore
 
 
@@ -28,11 +27,14 @@ class RAGEngine:
         project_root = Path(__file__).resolve().parents[3]
         self.embedding_model = embedding_model or SentenceTransformer(settings.embedding_model_name)
         self.vector_store = vector_store or VectorStore.load(index_dir or project_root / settings.faiss_index_dir)
-        ipc_sections_path = project_root / "backend/data/raw/ipc_full.json"
-        crpc_sections_path = project_root / "backend/data/raw/code_of_criminal_procedure_1973.json"
-        ipc_sections = json.loads(ipc_sections_path.read_text(encoding="utf-8"))
-        crpc_sections = json.loads(crpc_sections_path.read_text(encoding="utf-8"))
-        sections = ipc_sections + crpc_sections
+        raw_dir = project_root / settings.raw_data_dir
+        sections, loaded_files, skipped_files = load_raw_sections(raw_dir)
+        print("Loaded raw section files:")
+        for path in loaded_files:
+            print(f"- {path.name}")
+        for path in skipped_files:
+            print(f"Skipped non-section file: {path.name}")
+        print(f"Total combined section count: {len(sections)}")
         self.hybrid_searcher = HybridSearcher(
             vector_store=self.vector_store,
             sections=sections,
@@ -51,6 +53,7 @@ class RAGEngine:
 
         sources = [
             {
+                "act": result["metadata"]["act"],
                 "section_number": result["metadata"]["section_number"],
                 "section_title": result["metadata"]["section_title"],
             }

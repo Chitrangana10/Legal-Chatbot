@@ -27,8 +27,7 @@ def render_sources(sources: List[Dict[str, Any]]) -> None:
             return
 
         for source in sources:
-            st.write(f"IPC Section {source['section_number']} - {source['section_title']}")
-
+          st.write(f"{source.get('act', 'Unknown Act')} - Section {source['section_number']} - {source['section_title']}")
 
 def render_history() -> None:
     """Render the session's previous legal Q&A pairs."""

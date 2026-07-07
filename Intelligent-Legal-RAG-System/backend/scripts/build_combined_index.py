@@ -1,8 +1,7 @@
-"""Build a combined FAISS index and BM25 data for IPC and CrPC sections."""
+"""Build a combined FAISS index and BM25 data for all raw statute sections."""
 
 from __future__ import annotations
 
-import json
 import sys
 from pathlib import Path
 from typing import Any, Dict, List
@@ -15,15 +14,11 @@ from sentence_transformers import SentenceTransformer
 
 from backend.app.config import get_settings
 from backend.app.services.hybrid_search import build_bm25_index
+from backend.app.services.raw_corpus import load_raw_sections
 from backend.app.services.vector_store import VectorStore
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-
-def load_sections(path: Path) -> List[Dict[str, Any]]:
-    """Load statute sections from a JSON file."""
-    return json.loads(path.read_text(encoding="utf-8"))
 
 
 def build_text_for_embedding(section: Dict[str, Any]) -> str:
@@ -33,19 +28,25 @@ def build_text_for_embedding(section: Dict[str, Any]) -> str:
 
 def main() -> None:
     settings = get_settings()
-    ipc_path = PROJECT_ROOT / "backend/data/raw/ipc_full.json"
-    crpc_path = PROJECT_ROOT / "backend/data/raw/code_of_criminal_procedure_1973.json"
+    raw_dir = PROJECT_ROOT / settings.raw_data_dir
     index_dir = PROJECT_ROOT / settings.faiss_index_dir
 
-    ipc_sections = load_sections(ipc_path)
-    crpc_sections = load_sections(crpc_path)
-    sections = ipc_sections + crpc_sections
+    sections, loaded_files, skipped_files = load_raw_sections(raw_dir)
+
+    print("Loaded raw section files:")
+    for path in loaded_files:
+        print(f"- {path.name}")
+
+    for path in skipped_files:
+        print(f"Skipped non-section file: {path.name}")
+
+    print(f"Total combined section count: {len(sections)}")
 
     texts = [build_text_for_embedding(section) for section in sections]
     model = SentenceTransformer(settings.embedding_model_name)
     vectors = model.encode(texts, convert_to_numpy=True, normalize_embeddings=False)
 
-    bm25_index = build_bm25_index(sections)
+    build_bm25_index(sections)
     print(f"Built BM25 index over {len(sections)} combined sections.")
 
     store = VectorStore(dimension=int(vectors.shape[1]))

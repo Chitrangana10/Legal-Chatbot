@@ -13,7 +13,7 @@ class QueryRequest(BaseModel):
 
 class Source(BaseModel):
     """Retrieved legal source returned with an answer."""
-
+    act: str
     section_number: str
     section_title: str
 
