@@ -48,7 +48,6 @@ Intelligent-Legal-RAG-System/
 
 ```bash
 git clone <repo-url>
-cd Intelligent-Legal-RAG-System
 ```
 
 ## 2. Create and activate a virtual environment
