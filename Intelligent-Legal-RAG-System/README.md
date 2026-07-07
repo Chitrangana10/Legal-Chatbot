@@ -89,9 +89,9 @@ GEMINI_API_KEY=your_actual_key_here
 
 Other variables in `.env.example` (`APP_NAME`, `EMBEDDING_MODEL_NAME`, `DEFAULT_LLM_PROVIDER`, data directory paths, etc.) already have sensible defaults — only override them if you need to change models or paths. Confirm `.env` stays out of version control (it's already listed in `.gitignore`).
 
-## 5. Build the vector index
+## 5. Build the vector index (Optional)
 
-This processes the raw statute JSON files into embeddings and writes the FAISS index used at query time:
+The repository already includes a pre-built FAISS index, so this step is only required if you modify the legal dataset or need to regenerate the index.
 
 ```bash
 python backend/scripts/build_combined_index.py
@@ -101,51 +101,29 @@ Re-run this any time files in `backend/data/raw/` change.
 
 ## 6. Run the app
 
-Run the backend and frontend in two separate terminals, both with `.venv` activated.
+Open two terminals with `.venv` activated.
 
-**Terminal 1 — backend (FastAPI):**
+**Terminal 1 — Backend**
 
 ```bash
 python -m uvicorn backend.app.main:app --reload
 ```
 
-Runs on `http://localhost:8000`. Check health at `http://localhost:8000/health`.
-
-**Terminal 2 — frontend (Streamlit):**
+**Terminal 2 — Frontend**
 
 ```bash
 python -m streamlit run frontend/streamlit_app.py
 ```
 
-Opens at `http://localhost:8501`.
+The application will be available at:
 
-If port 8000 is already in use:
+- Frontend: `http://localhost:8501`
+- Backend API: `http://localhost:8000`
 
-```bash
-netstat -ano | findstr :8000
-taskkill //PID <the_number_shown> //F
-```
-
-## Alternative: Docker Compose
-
-```bash
-cd docker
-docker compose up --build
-```
-
-This builds and runs both the backend (`:8000`) and frontend (`:8501`) containers, loading environment variables from the root `.env` file. Note: the Dockerfiles expect a `pyproject.toml` at the project root for dependency install — if one isn't present in your checkout, add it (or adjust the Dockerfile to `COPY requirements.txt` and `pip install -r requirements.txt` instead) before building.
-
-## API reference
-
-| Method | Path | Description |
-|---|---|---|
-| `GET` | `/health` | Returns `{status, index_loaded}` — confirms the API is up and the FAISS index loaded successfully at startup |
-| `POST` | `/query` | Body: `{"question": "..."}` → Returns `{"answer": "...", "sources": [{"act", "section_number", "section_title"}]}` |
 
 ## Quick test questions
 
 For a comprehensive list of sample queries across all supported Acts, refer to **[`sample-ques.md`](sample-ques.md)**.
-
 
 - "What is the punishment for murder?" → should cite IPC Section 302
 - "What is the procedure for arrest without a warrant?" → should cite CrPC sections
@@ -159,7 +137,10 @@ pytest
 
 ## Troubleshooting
 
-- **Gemini quota errors**: the free tier is capped at 20 requests/day. On quota errors, the app falls back to listing retrieved sources instead of a generated answer.
-- **Stale answers after a change**: check for a leftover process on port 8000, kill it, and restart uvicorn.
-- **`ModuleNotFoundError`**: your `.venv` likely isn't activated — you should see `(.venv)` in your prompt. Re-activate it (step 2) and reinstall if needed.
-- **`.gitignore` sanity check**: `.venv/`, `.env`, `__pycache__/`, and `*.pyc` should never be committed.
+- **Gemini quota exceeded:** The application falls back to returning the retrieved legal sources.
+- **ModuleNotFoundError:** Ensure the virtual environment is activated before running the application.
+- **Updated the legal dataset?** Rebuild the FAISS index using:
+
+```bash
+ python backend/scripts/build_combined_index.py
+
