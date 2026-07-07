@@ -122,7 +122,7 @@ The application will be available at:
 
 ## Quick test questions
 
-For a comprehensive list of sample queries across all supported Acts, refer to **[`sample-ques.md`](Intelligent-Legal-RAG-System/sample-ques.md)**.
+For a comprehensive list of sample queries across all supported Acts, refer to **[`sample-ques.md`](sample-ques.md)**.
 
 - "What is the punishment for murder?" → should cite IPC Section 302
 - "What is the procedure for arrest without a warrant?" → should cite CrPC sections
