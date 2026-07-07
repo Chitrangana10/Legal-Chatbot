@@ -144,6 +144,9 @@ This builds and runs both the backend (`:8000`) and frontend (`:8501`) container
 
 ## Quick test questions
 
+For a comprehensive list of sample queries across all supported Acts, refer to **[`sample-ques.md`](sample-ques.md)**.
+
+
 - "What is the punishment for murder?" → should cite IPC Section 302
 - "What is the procedure for arrest without a warrant?" → should cite CrPC sections
 - "What is the GST rate on restaurant food?" → should refuse, not answer (out of scope of the ingested statutes)
