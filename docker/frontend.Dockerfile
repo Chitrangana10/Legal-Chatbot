@@ -1,8 +1,12 @@
 FROM python:3.11-slim
 
 WORKDIR /app
-COPY pyproject.toml ./
-COPY frontend ./frontend
 
-CMD ["streamlit", "run", "frontend/streamlit_app.py", "--server.address", "0.0.0.0", "--server.port", "8501"]
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
+COPY frontend/ ./frontend/
+
+EXPOSE 8501
+
+CMD ["python", "-m", "streamlit", "run", "frontend/streamlit_app.py", "--server.address=0.0.0.0"]

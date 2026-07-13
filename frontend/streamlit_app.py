@@ -8,7 +8,7 @@ import requests
 import streamlit as st
 
 
-API_URL = "http://127.0.0.1:8000/query"
+API_URL = "http://backend:8000/query"
 
 
 def submit_query(question: str) -> Dict[str, Any]:
