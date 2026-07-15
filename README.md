@@ -15,7 +15,7 @@ An AI-powered legal retrieval and guidance system for Indian law, built using re
 ## Project structure
 
 ```
-Intelligent-Legal-RAG-System/
+Legal-Chatbot/
 ├── backend/
 │   ├── app/
 │   │   ├── main.py            # FastAPI app entrypoint

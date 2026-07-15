@@ -1,0 +1,38 @@
+# Production Docker Compose Configuration
+#
+# This file uses the pre-built Docker images published on Docker Hub
+# instead of building them locally.
+#
+# Usage:
+# docker compose -f docker-compose.prod.yml up
+#
+# Make sure to create a .env file (from .env.example) and set
+# your GEMINI_API_KEY before running.
+
+services:
+  backend:
+    image: chitranganalaxkar/legal-chatbot-backend:latest
+    container_name: legal-chatbot-backend
+
+    ports:
+      - "8000:8000"
+
+    volumes:
+      - ./backend/data:/app/backend/data
+
+    env_file:
+      - .env
+
+    restart: unless-stopped
+
+  frontend:
+    image: chitranganalaxkar/legal-chatbot-frontend:latest
+    container_name: legal-chatbot-frontend
+
+    ports:
+      - "8501:8501"
+
+    depends_on:
+      - backend
+
+    restart: unless-stopped
