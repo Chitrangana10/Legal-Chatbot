@@ -28,6 +28,8 @@ jobs:
           file: docker/backend.Dockerfile
           load: true
           tags: chitranganalaxkar/legal-chatbot-backend:latest
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
 
       - name: Build frontend image
         uses: docker/build-push-action@v5
@@ -36,6 +38,8 @@ jobs:
           file: docker/frontend.Dockerfile
           load: true
           tags: chitranganalaxkar/legal-chatbot-frontend:latest
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
 
       - name: Smoke test - backend starts and responds
         run: |
@@ -57,6 +61,8 @@ jobs:
           tags: |
             chitranganalaxkar/legal-chatbot-backend:latest
             chitranganalaxkar/legal-chatbot-backend:${{ steps.vars.outputs.tag }}
+          cache-from: type=gha,scope=backend
+          cache-to: type=gha,mode=max,scope=backend
 
       - name: Push frontend image
         uses: docker/build-push-action@v5
@@ -67,6 +73,8 @@ jobs:
           tags: |
             chitranganalaxkar/legal-chatbot-frontend:latest
             chitranganalaxkar/legal-chatbot-frontend:${{ steps.vars.outputs.tag }}
+          cache-from: type=gha,scope=frontend
+          cache-to: type=gha,mode=max,scope=frontend
 
   deploy:
     needs: build-test-push
