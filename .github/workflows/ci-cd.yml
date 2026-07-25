@@ -103,5 +103,11 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sleep 10
-            curl --fail http://localhost:8000/health
+            for i in {1..12}; do
+              if curl --fail http://localhost:8000/health; then
+                exit 0
+              fi
+              sleep 5
+            done
+            docker logs legal-chatbot-backend --tail 100
+            exit 1
