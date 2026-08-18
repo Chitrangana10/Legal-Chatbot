@@ -111,8 +111,8 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             for i in $(seq 1 24); do
-              if curl --fail --silent http://localhost:8000/health; then
-                echo "Backend is up."
+              if curl --fail --silent http://localhost/api/health; then
+                echo "Backend is up (via nginx)."
                 exit 0
               fi
               echo "Waiting for backend to become healthy... ($i/24)"
@@ -120,4 +120,5 @@ jobs:
             done
             echo "Backend did not become healthy after deploy."
             docker logs legal-chatbot-backend --tail 100
+            docker logs legal-chatbot-nginx --tail 100
             exit 1
