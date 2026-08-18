@@ -52,8 +52,29 @@ jobs:
             -v ${{ github.workspace }}/backend/data:/app/backend/data \
             --env GEMINI_API_KEY=dummy-key-for-smoke-test \
             chitranganalaxkar/legal-chatbot-backend:latest
-          sleep 15
-          curl --fail http://localhost:8000/health || (docker logs test-backend && exit 1)
+
+          # Cold start loads the embedding model, FAISS index, and builds a
+          # BM25 index over ~3,000 sections inside FastAPI's lifespan hook -
+          # no request (not even /health) is served until that finishes, and
+          # a fixed short sleep isn't reliable. Poll instead, up to 2 minutes.
+          healthy=false
+          for i in $(seq 1 24); do
+            if curl --fail --silent http://localhost:8000/health; then
+              echo "Backend is up."
+              healthy=true
+              break
+            fi
+            echo "Waiting for backend to become healthy... ($i/24)"
+            sleep 5
+          done
+
+          if [ "$healthy" != "true" ]; then
+            echo "Backend did not become healthy in time."
+            docker logs test-backend
+            docker stop test-backend
+            exit 1
+          fi
+
           docker stop test-backend
 
       - name: Push backend image
@@ -103,5 +124,13 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
-            sleep 10
-            curl --fail http://localhost:8000/health
+            for i in $(seq 1 24); do
+              if curl --fail --silent http://localhost:8000/health; then
+                echo "Backend is up."
+                exit 0
+              fi
+              echo "Waiting for backend to become healthy... ($i/24)"
+              sleep 5
+            done
+            echo "Backend did not become healthy after deploy."
+            exit 1

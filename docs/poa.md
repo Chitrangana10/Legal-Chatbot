@@ -18,12 +18,12 @@ Status legend: ✅ done and wired in · 🟡 exists but not wired in / stub ·
 | Pre-built FAISS index (8 Acts, 3,173 sections) | ✅ | `backend/data/faiss_index/` |
 | Offline index build script | ✅ | `backend/scripts/build_combined_index.py` |
 | Indian Kanoon scraper | ✅ (implemented, not invoked by build path) | `ingestion/scrapers/indian_kanoon.py` |
-| Reranker (cross-encoder) | 🟡 | `services/reranker.py` — `raise NotImplementedError` |
-| Structured logging | 🟡 | `core/logging.py` — stub |
-| API auth / key validation | 🟡 | `core/security.py` — stub |
-| Citation formatting/validation utils | 🟡 | `utils/citations.py` — stub |
-| Clean ingestion pipeline (clean → chunk → embed → index) | 🟡 | `ingestion/{cleaner,chunker,embedder,build_index}.py` — all stubs; `scripts/build_combined_index.py` bypasses this today |
-| Production test suite | 🟡 | `tests/test_skeleton.py` intentionally `raise NotImplementedError`; only `test_rag_fallback.py` is a real, passing test |
+| Reranker (cross-encoder) | ⬜ | Removed during cleanup — was an unwired stub (`raise NotImplementedError`). Re-add per Phase 1, item 1 below if pursued. |
+| Structured logging | ⬜ | Removed during cleanup — was an unwired stub. Re-add per Phase 1, item 3 below if pursued. |
+| API auth / key validation | ⬜ | Removed during cleanup — was an unwired stub. Re-add per Phase 3, item 8 below if pursued. |
+| Citation formatting/validation utils | ⬜ | Removed during cleanup — was an unwired stub. Re-add per Phase 1, item 2 below if pursued. |
+| Clean ingestion pipeline (clean → chunk → embed → index) | ⬜ | Removed during cleanup — `ingestion/{cleaner,chunker,embedder,build_index}.py` were all unwired stubs. `scripts/build_combined_index.py` remains the real, working index-build path. Re-add per Phase 2 below if pursued. |
+| Production test suite | 🟡 | `tests/test_skeleton.py` (an intentionally-failing placeholder) was removed during cleanup; only `test_rag_fallback.py` is a real, passing test |
 | Multi-provider LLM support (Together etc.) | 🟡 | `TOGETHER_API_KEY` present in config, not wired into `llm_service.py` |
 | User accounts / auth | ⬜ | Not started |
 | Persistent chat history (per user) | ⬜ | Not started — history lives only in the Streamlit session |

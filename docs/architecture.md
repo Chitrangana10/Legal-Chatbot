@@ -45,9 +45,10 @@ unavailable.
     1) → `{answer: str, sources: [{act, section_number, section_title}]}`.
     Any exception inside `rag_engine.answer()` is caught and turned into a
     `500 {"error": ...}` JSON response rather than an unhandled crash.
-- `backend/app/core/security.py` and `backend/app/core/logging.py` exist as
-  named stubs (`raise NotImplementedError`) — **there is currently no auth
-  and no structured logging**; both are placeholders for later.
+- **There is currently no auth and no structured logging.** Unwired stub
+  files for both (`core/security.py`, `core/logging.py`) were removed
+  during a cleanup pass since they weren't called from anywhere; see
+  `docs/poa.md` Phase 1/3 if you want to add them back for real.
 
 ### 2.3 RAG engine (`backend/app/services/rag_engine.py`)
 
@@ -92,9 +93,9 @@ This is the orchestrator. `RAGEngine.__init__`:
 - Final result: top `top_k` (5, from the engine) sections by combined RRF
   score, each carrying its FAISS rank/score and BM25 rank/score for
   debugging.
-- `backend/app/services/reranker.py` exists as a stub
-  (`raise NotImplementedError`) — a cross-encoder reranking step is
-  planned but **not wired into the live path today**.
+- A cross-encoder reranking step is planned but **not implemented today**
+  — the earlier unwired `reranker.py` stub was removed during cleanup;
+  see `docs/poa.md` Phase 1 if you want to build it for real.
 
 ### 2.5 Prompt construction
 
@@ -154,17 +155,18 @@ statute citations — a hard requirement for a legal-domain assistant.
   disk). This script, **not** the `backend/ingestion/` package, is what
   actually runs today (see 2.8).
 
-### 2.8 Ingestion package — scaffolded, not implemented
+### 2.8 Ingestion — scraper + a single build script (no separate pipeline package)
 
-`backend/ingestion/{cleaner,chunker,embedder,build_index}.py` are all
-present as typed function signatures that `raise NotImplementedError`.
-The intent is a clean pipeline: scrape/clean → chunk → embed → build
-index. In the current build, `backend/scripts/build_combined_index.py`
-shortcuts all of that — it treats each raw JSON section as already a
-correctly-sized "chunk" (no further splitting) and embeds/indexes it
-directly. `backend/ingestion/scrapers/indian_kanoon.py` (BeautifulSoup +
-requests) is implemented and can pull statute text from Indian Kanoon
-pages, but isn't invoked by the current build path.
+`backend/scripts/build_combined_index.py` is what actually runs today: it
+treats each raw JSON section as already a correctly-sized "chunk" (no
+further splitting) and embeds/indexes it directly. An earlier
+`backend/ingestion/{cleaner,chunker,embedder,build_index}.py` package —
+typed function signatures that all `raise NotImplementedError` — was
+removed during cleanup since nothing called it; see `docs/poa.md` Phase 2
+if a real clean → chunk → embed → index pipeline is worth building later.
+`backend/ingestion/scrapers/indian_kanoon.py` (BeautifulSoup + requests)
+is implemented and can pull statute text from Indian Kanoon pages, but
+isn't invoked by the current build path.
 
 ### 2.9 Deployment — Docker Compose, two containers
 

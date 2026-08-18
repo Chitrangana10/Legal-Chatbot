@@ -143,23 +143,24 @@ worth spelling out the trade-off rather than treating it as an oversight.
   chatbot: a hard failure with no information is worse than a rougher,
   templated answer.
 
-## 8. Why the ingestion package is still stubbed while the app runs
+## 8. Why there's no separate ingestion pipeline package
 
-This looks inconsistent at first (`ingestion/chunker.py` etc. all
-`raise NotImplementedError`) but it's a reasonable **build-order**
-choice, not a bug:
+An earlier `ingestion/{cleaner,chunker,embedder,build_index}.py` package
+existed as scaffolding (`raise NotImplementedError` signatures) but was
+never wired to anything and was removed during a cleanup pass. This was a
+reasonable **build-order** choice originally, not a bug:
 
 - The *end-to-end shape* (FastAPI ↔ RAGEngine ↔ FAISS/BM25 ↔ Gemini) was
   validated first, using a shortcut path
   (`scripts/build_combined_index.py`) that treats each raw JSON record as
   already being a well-sized chunk — true for statute sections, which are
   naturally short, numbered, and citation-ready.
-- The "proper" ingestion pipeline (clean → chunk with overlap → embed →
-  index) is scaffolded with real function signatures and docstrings
-  ready to fill in, but deliberately deferred until it's actually needed
-  — e.g. once longer documents (case law, commentary, multi-page
-  provisions) are added that don't naturally fit the "one JSON record =
-  one chunk" assumption the current script relies on.
+- A "proper" ingestion pipeline (clean → chunk with overlap → embed →
+  index) is only worth building once it's actually needed — e.g. once
+  longer documents (case law, commentary, multi-page provisions) are
+  added that don't naturally fit the "one JSON record = one chunk"
+  assumption the current script relies on. See `docs/poa.md` Phase 2 for
+  the plan if that need comes up.
 
 ## 9. Why Docker Compose (not Kubernetes / a PaaS) for deployment
 

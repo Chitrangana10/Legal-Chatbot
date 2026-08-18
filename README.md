@@ -21,9 +21,9 @@ Legal-Chatbot/
 │   │   ├── main.py            # FastAPI app entrypoint
 │   │   ├── config.py          # Settings loaded from .env
 │   │   ├── api/                # routes.py, schemas.py
-│   │   ├── core/               # logging, security
-│   │   └── services/           # rag_engine, hybrid_search, llm_service, vector_store, reranker
-│   ├── ingestion/              # chunker, cleaner, embedder, build_index, scrapers
+│   │   └── services/           # rag_engine, hybrid_search, llm_service, vector_store
+│   ├── ingestion/
+│   │   └── scrapers/           # indian_kanoon.py — pulls statute text from Indian Kanoon
 │   ├── scripts/                # build_combined_index.py, test_rag.py, test_retrieval.py
 │   └── data/
 │       ├── raw/                 # source statute JSON files

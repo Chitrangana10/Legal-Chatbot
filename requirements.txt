@@ -1,3 +1,4 @@
+--extra-index-url https://download.pytorch.org/whl/cpu
 fastapi
 uvicorn
 pydantic
@@ -11,5 +12,4 @@ streamlit
 requests
 beautifulsoup4
 pytest
-numpy 
-
+numpy

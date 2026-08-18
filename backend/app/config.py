@@ -34,7 +34,6 @@ class Settings(BaseSettings):
         default="sentence-transformers/all-MiniLM-L6-v2",
         validation_alias="EMBEDDING_MODEL_NAME",
     )
-    reranker_model_name: Optional[str] = Field(default=None, validation_alias="RERANKER_MODEL_NAME")
     default_llm_provider: str = Field(default="gemini", validation_alias="DEFAULT_LLM_PROVIDER")
     default_llm_model: str = Field(default="gemini-3.5-flash", validation_alias="DEFAULT_LLM_MODEL")
 
@@ -45,11 +44,6 @@ class Settings(BaseSettings):
         validation_alias="PROCESSED_DATA_DIR",
     )
     faiss_index_dir: Path = Field(default=Path("backend/data/faiss_index"), validation_alias="FAISS_INDEX_DIR")
-    sample_ipc_path: Path = Field(default=Path("backend/data/raw/sample_ipc.json"), validation_alias="SAMPLE_IPC_PATH")
-    citation_store_path: Path = Field(
-        default=Path("backend/data/processed/citations.jsonl"),
-        validation_alias="CITATION_STORE_PATH",
-    )
 
 
 def get_settings() -> Settings:
