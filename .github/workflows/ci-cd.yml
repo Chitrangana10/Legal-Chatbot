@@ -1,30 +1,24 @@
 name: CI-CD Pipeline
-
 on:
   push:
     branches: [main]
   workflow_dispatch:
-
 jobs:
   build-test-push:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-
       - name: Set image tag
         id: vars
         run: echo "tag=$(TZ='Asia/Kolkata' date +%Y-%m-%d_%H-%M-%S)" >> $GITHUB_OUTPUT
-
       - name: Log in to Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
-
       - name: Build backend image
         uses: docker/build-push-action@v5
         with:
@@ -34,7 +28,6 @@ jobs:
           tags: chitranganalaxkar/legal-chatbot-backend:latest
           cache-from: type=gha,scope=backend
           cache-to: type=gha,mode=max,scope=backend
-
       - name: Build frontend image
         uses: docker/build-push-action@v5
         with:
@@ -44,7 +37,6 @@ jobs:
           tags: chitranganalaxkar/legal-chatbot-frontend:latest
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
-
       - name: Smoke test - backend starts and responds
         run: |
           docker run -d --name test-backend \
@@ -52,7 +44,6 @@ jobs:
             -v ${{ github.workspace }}/backend/data:/app/backend/data \
             --env GEMINI_API_KEY=dummy-key-for-smoke-test \
             chitranganalaxkar/legal-chatbot-backend:latest
-
           # Cold start loads the embedding model, FAISS index, and builds a
           # BM25 index over ~3,000 sections inside FastAPI's lifespan hook -
           # no request (not even /health) is served until that finishes, and
@@ -67,16 +58,13 @@ jobs:
             echo "Waiting for backend to become healthy... ($i/24)"
             sleep 5
           done
-
           if [ "$healthy" != "true" ]; then
             echo "Backend did not become healthy in time."
             docker logs test-backend
             docker stop test-backend
             exit 1
           fi
-
           docker stop test-backend
-
       - name: Push backend image
         uses: docker/build-push-action@v5
         with:
@@ -88,7 +76,6 @@ jobs:
             chitranganalaxkar/legal-chatbot-backend:${{ steps.vars.outputs.tag }}
           cache-from: type=gha,scope=backend
           cache-to: type=gha,mode=max,scope=backend
-
       - name: Push frontend image
         uses: docker/build-push-action@v5
         with:
@@ -100,7 +87,6 @@ jobs:
             chitranganalaxkar/legal-chatbot-frontend:${{ steps.vars.outputs.tag }}
           cache-from: type=gha,scope=frontend
           cache-to: type=gha,mode=max,scope=frontend
-
   deploy:
     needs: build-test-push
     runs-on: ubuntu-latest
@@ -116,7 +102,6 @@ jobs:
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
             docker image prune -f
-
       - name: Verify deployment
         uses: appleboy/ssh-action@v1.0.3
         with:
@@ -133,4 +118,5 @@ jobs:
               sleep 5
             done
             echo "Backend did not become healthy after deploy."
+            docker logs legal-chatbot-backend --tail 100
             exit 1
