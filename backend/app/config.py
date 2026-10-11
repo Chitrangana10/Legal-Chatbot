@@ -34,6 +34,8 @@ class Settings(BaseSettings):
         default="sentence-transformers/all-MiniLM-L6-v2",
         validation_alias="EMBEDDING_MODEL_NAME",
     )
+    reranker_model_name: str = Field(default="", validation_alias="RERANKER_MODEL_NAME")
+    enable_reranker: bool = Field(default=True, validation_alias="ENABLE_RERANKER")
     default_llm_provider: str = Field(default="gemini", validation_alias="DEFAULT_LLM_PROVIDER")
     default_llm_model: str = Field(default="gemini-3.5-flash", validation_alias="DEFAULT_LLM_MODEL")
 

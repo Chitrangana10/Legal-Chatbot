@@ -1,0 +1,150 @@
+{
+  "mode": "applied",
+  "files": [
+    {
+      "file": "code_of_criminal_procedure_1973.json",
+      "before": 525,
+      "after": 525,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    },
+    {
+      "file": "constitution_of_india.json",
+      "before": 493,
+      "after": 493,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": [
+        {
+          "position": 12,
+          "act": "Constitution of India",
+          "section_number": "12",
+          "section_title": "Definition"
+        },
+        {
+          "position": 43,
+          "act": "Constitution of India",
+          "section_number": "36",
+          "section_title": "Definition"
+        },
+        {
+          "position": 171,
+          "act": "Constitution of India",
+          "section_number": "152",
+          "section_title": "Definition"
+        },
+        {
+          "position": 269,
+          "act": "Constitution of India",
+          "section_number": "243",
+          "section_title": "Definitions"
+        },
+        {
+          "position": 283,
+          "act": "Constitution of India",
+          "section_number": "243N",
+          "section_title": "Continuance of existing laws and Panchayats"
+        },
+        {
+          "position": 285,
+          "act": "Constitution of India",
+          "section_number": "243P",
+          "section_title": "Definitions"
+        },
+        {
+          "position": 301,
+          "act": "Constitution of India",
+          "section_number": "243ZF",
+          "section_title": "Continuance of existing laws and Municipalities"
+        },
+        {
+          "position": 303,
+          "act": "Constitution of India",
+          "section_number": "243ZH",
+          "section_title": "Definitions"
+        },
+        {
+          "position": 315,
+          "act": "Constitution of India",
+          "section_number": "243ZT",
+          "section_title": "Continuance of existing laws"
+        },
+        {
+          "position": 340,
+          "act": "Constitution of India",
+          "section_number": "264",
+          "section_title": "Interpretation"
+        },
+        {
+          "position": 348,
+          "act": "Constitution of India",
+          "section_number": "270",
+          "section_title": "Taxes levied and distributed between the Union and the States"
+        },
+        {
+          "position": 389,
+          "act": "Constitution of India",
+          "section_number": "308",
+          "section_title": "Interpretation"
+        }
+      ]
+    },
+    {
+      "file": "consumer_protection_act_2019.json",
+      "before": 107,
+      "after": 107,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    },
+    {
+      "file": "ipc_full.json",
+      "before": 574,
+      "after": 574,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    },
+    {
+      "file": "the_income_tax_act_1961.json",
+      "before": 905,
+      "after": 905,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    },
+    {
+      "file": "the_indian_evidence_act_1872.json",
+      "before": 167,
+      "after": 167,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    },
+    {
+      "file": "the_information_technology_act_2000.json",
+      "before": 119,
+      "after": 119,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    },
+    {
+      "file": "the_motor_vehicles_act_1988.json",
+      "before": 249,
+      "after": 249,
+      "normalised": 0,
+      "removed_junk": [],
+      "removed_dupes": [],
+      "schedule_candidates_for_step4": []
+    }
+  ]
+}

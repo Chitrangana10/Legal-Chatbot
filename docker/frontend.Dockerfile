@@ -6,6 +6,8 @@ COPY requirements-frontend.txt .
 RUN pip install --no-cache-dir -r requirements-frontend.txt
 
 COPY frontend/ ./frontend/
+# Streamlit reads its theme from .streamlit/ relative to the working dir.
+COPY .streamlit/ ./.streamlit/
 
 EXPOSE 8501
 

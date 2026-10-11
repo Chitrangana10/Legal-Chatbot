@@ -83,8 +83,14 @@ This is the orchestrator. `RAGEngine.__init__`:
 - **FAISS side**: `VectorStore` (see 2.6) does a cosine-similarity search
   (vectors are L2-normalized, index is `IndexFlatIP` — inner product on
   normalized vectors *is* cosine similarity) and returns the top 10.
-- **BM25 side**: `rank_bm25.BM25Okapi` over the same section texts,
-  tokenized with a simple `\w+` regex, also returns the top 10.
+- **BM25 side**: `rank_bm25.BM25Okapi` over the same chunks the FAISS index was
+  built from, tokenized with a `\w+` regex minus a small stopword list, also
+  returns the top 10. The stopword list matters: without it, Constitution
+  article 69 ("Oath of the Vice-President") was the top keyword hit for "What
+  are my rights if I am arrested?" purely because the oath repeats "I", and
+  `rank_bm25` floors a would-be-negative idf at a small positive value, so a
+  word present in nearly every document still adds to the score. Words that
+  change a section's meaning ("not", "shall", "under", "without") are kept.
 - **Fusion**: Reciprocal Rank Fusion (RRF) with `k=60` —
   `score = Σ 1 / (60 + rank)` across whichever list(s) each section appears
   in. This is a standard, tuning-free way to combine two differently-scaled

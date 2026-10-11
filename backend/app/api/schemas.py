@@ -23,6 +23,11 @@ class QueryResponse(BaseModel):
 
     answer: str
     sources: List[Source]
+    # The frontend must be able to tell "the law does not cover this" apart
+    # from "the answer service is down" - without this the second silently
+    # looks like the first.
+    degraded: bool = False
+    notice: str = ""
 
 
 class HealthResponse(BaseModel):

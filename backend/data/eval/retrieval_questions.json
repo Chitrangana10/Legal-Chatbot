@@ -1,0 +1,149 @@
+{
+  "description": "Retrieval evaluation set. Each question lists the section(s) a correct answer must cite. Questions are phrased the way a non-lawyer would actually type them, not in statute language, because that is the gap retrieval has to close. Every expected section was verified to exist in backend/data/raw before this file was written.",
+  "questions": [
+    {
+      "question": "What is the punishment for murder?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "302"}]
+    },
+    {
+      "question": "Someone cheated me out of money, what is the punishment?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "420"}]
+    },
+    {
+      "question": "What is the punishment for theft?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "379"}]
+    },
+    {
+      "question": "What is the punishment for criminal conspiracy?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "120B"}]
+    },
+    {
+      "question": "What is dowry death?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "304B"}]
+    },
+    {
+      "question": "What is culpable homicide?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "299"}]
+    },
+    {
+      "question": "What is the punishment for gang rape of a girl under sixteen years old?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "376DA"}]
+    },
+    {
+      "question": "What happens if someone tries to kill another person but fails?",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "307"}]
+    },
+    {
+      "question": "How do I file an FIR at a police station?",
+      "expected": [{"act": "The Code of Criminal Procedure, 1973", "section_number": "154"}]
+    },
+    {
+      "question": "Can I get bail before being arrested?",
+      "expected": [{"act": "The Code of Criminal Procedure, 1973", "section_number": "438"}]
+    },
+    {
+      "question": "When can the police arrest someone without a warrant?",
+      "expected": [{"act": "The Code of Criminal Procedure, 1973", "section_number": "41"}]
+    },
+    {
+      "question": "Does a police officer have to tell me why I am being arrested?",
+      "expected": [{"act": "The Code of Criminal Procedure, 1973", "section_number": "50"}]
+    },
+    {
+      "question": "Who appoints a Public Prosecutor?",
+      "expected": [{"act": "The Code of Criminal Procedure, 1973", "section_number": "24"}]
+    },
+    {
+      "question": "Can my wife claim maintenance money from me after separation?",
+      "expected": [{"act": "The Code of Criminal Procedure, 1973", "section_number": "125"}]
+    },
+    {
+      "question": "What is the right to equality before the law?",
+      "expected": [{"act": "Constitution of India", "section_number": "14"}]
+    },
+    {
+      "question": "What is the right to life and personal liberty?",
+      "expected": [{"act": "Constitution of India", "section_number": "21"}]
+    },
+    {
+      "question": "What are my rights if I am arrested and detained?",
+      "expected": [{"act": "Constitution of India", "section_number": "22"}]
+    },
+    {
+      "question": "Do I have freedom of speech and expression?",
+      "expected": [{"act": "Constitution of India", "section_number": "19"}]
+    },
+    {
+      "question": "Is untouchability banned in India?",
+      "expected": [{"act": "Constitution of India", "section_number": "17"}]
+    },
+    {
+      "question": "Can I be discriminated against because of my religion or caste?",
+      "expected": [{"act": "Constitution of India", "section_number": "15"}]
+    },
+    {
+      "question": "Do I have to wear a helmet while riding a motorcycle?",
+      "expected": [{"act": "The Motor Vehicles Act, 1988", "section_number": "129"}]
+    },
+    {
+      "question": "What is the penalty for drunk driving?",
+      "expected": [{"act": "The Motor Vehicles Act, 1988", "section_number": "185"}]
+    },
+    {
+      "question": "What is the fine for driving a car without a licence?",
+      "expected": [{"act": "The Motor Vehicles Act, 1988", "section_number": "181"}]
+    },
+    {
+      "question": "What happens if I drive a vehicle that is not registered?",
+      "expected": [{"act": "The Motor Vehicles Act, 1988", "section_number": "192"}]
+    },
+    {
+      "question": "Someone stole my identity online, what is the punishment?",
+      "expected": [{"act": "The Information Technology Act, 2000", "section_number": "66C"}]
+    },
+    {
+      "question": "What is the punishment for posting obscene material on the internet?",
+      "expected": [{"act": "The Information Technology Act, 2000", "section_number": "67"}]
+    },
+    {
+      "question": "Someone hacked my computer and damaged my data, what can I claim?",
+      "expected": [{"act": "The Information Technology Act, 2000", "section_number": "43"}]
+    },
+    {
+      "question": "Who has the burden of proof in a court case?",
+      "expected": [{"act": "The Indian Evidence Act, 1872", "section_number": "101"}]
+    },
+    {
+      "question": "Can an expert's opinion be used as evidence in court?",
+      "expected": [{"act": "The Indian Evidence Act, 1872", "section_number": "45"}]
+    },
+    {
+      "question": "Is a confession made to a police officer admissible in court?",
+      "expected": [{"act": "The Indian Evidence Act, 1872", "section_number": "25"}]
+    },
+    {
+      "question": "Where do I file a consumer complaint and how?",
+      "expected": [
+        {"act": "Consumer Protection Act, 2019", "section_number": "35"},
+        {"act": "Consumer Protection Act, 2019", "section_number": "34"}
+      ]
+    },
+    {
+      "question": "Can I claim a tax deduction for my life insurance premium?",
+      "expected": [{"act": "The Income Tax Act, 1961", "section_number": "80C"}]
+    },
+    {
+      "question": "What is the penalty for not deducting tax at source?",
+      "expected": [{"act": "The Income Tax Act, 1961", "section_number": "271C"}]
+    },
+    {
+      "question": "Who has to file an income tax return?",
+      "expected": [{"act": "The Income Tax Act, 1961", "section_number": "139"}]
+    },
+    {
+      "question": "Show me Section 302 of the IPC",
+      "expected": [{"act": "The Indian Penal Code, 1860", "section_number": "302"}],
+      "note": "exact-citation lookup, a very common request for a legal assistant"
+    }
+  ]
+}

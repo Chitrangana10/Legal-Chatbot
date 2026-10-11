@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Legal Chatbot Runtime Architecture",
+    "subtitle": "Request path through retrieval, reranking, and generation",
+    "output": ".archify/architecture-runtime-overview-20260930-000000/runtime-architecture.html",
+    "viewBox": [1220, 680],
+    "quality_profile": "showcase"
+  },
+  "components": [
+    { "id": "browser", "type": "external", "label": "Browser", "sublabel": "end user", "pos": [30, 380], "size": [120, 60] },
+    { "id": "nginx", "type": "security", "label": "Nginx", "sublabel": "reverse proxy :80", "pos": [210, 380], "size": [120, 60] },
+    { "id": "frontend", "type": "frontend", "label": "Streamlit UI", "sublabel": "chat interface :8501", "pos": [390, 380], "size": [130, 60] },
+    { "id": "api", "type": "backend", "label": "FastAPI", "sublabel": "/query, /health :8000", "pos": [580, 380], "size": [120, 60] },
+    { "id": "rag_engine", "type": "backend", "label": "RAG Engine", "sublabel": "answer orchestration", "pos": [760, 380], "size": [140, 60] },
+    { "id": "gemini", "type": "external", "label": "Gemini API", "sublabel": "Google Generative AI", "pos": [1025, 380], "size": [140, 60] },
+    { "id": "hybrid_search", "type": "backend", "label": "Hybrid Search", "sublabel": "FAISS + BM25 fusion", "pos": [750, 220], "size": [160, 60] },
+    { "id": "faiss_index", "type": "database", "label": "FAISS Index", "sublabel": "persisted vector store", "pos": [760, 85], "size": [140, 55] },
+    { "id": "reranker", "type": "backend", "label": "Cross-Encoder", "sublabel": "candidate reranking", "pos": [715, 534], "size": [150, 55] },
+    { "id": "corpus", "type": "database", "label": "Raw Corpus", "sublabel": "8 Acts, JSON files", "pos": [905, 534], "size": [150, 55] }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Docker Compose deployment", "wraps": ["nginx", "frontend", "api", "rag_engine", "hybrid_search", "faiss_index", "reranker", "corpus"], "pad": 30 },
+    { "kind": "security-group", "label": "Private app network (no public ingress)", "wraps": ["frontend", "api", "rag_engine", "hybrid_search", "faiss_index", "reranker", "corpus"], "pad": 16 }
+  ],
+  "connections": [
+    { "id": "browser-to-nginx", "from": "browser", "to": "nginx", "label": "HTTPS", "variant": "emphasis" },
+    { "id": "nginx-to-frontend", "from": "nginx", "to": "frontend", "label": "routes /" },
+    { "id": "frontend-to-api", "from": "frontend", "to": "api", "label": "/query", "variant": "emphasis" },
+    { "id": "api-to-rag", "from": "api", "to": "rag_engine", "label": "answer()" },
+    { "id": "rag-to-hybrid", "from": "rag_engine", "to": "hybrid_search", "label": "search", "fromSide": "top", "toSide": "bottom" },
+    { "id": "hybrid-to-faiss", "from": "hybrid_search", "to": "faiss_index", "label": "vector search", "fromSide": "top", "toSide": "bottom" },
+    { "id": "rag-to-reranker", "from": "rag_engine", "to": "reranker", "label": "rerank", "fromSide": "bottom", "toSide": "top" },
+    { "id": "rag-to-corpus", "from": "rag_engine", "to": "corpus", "label": "startup check", "variant": "dashed", "fromSide": "bottom", "toSide": "top" },
+    { "id": "rag-to-gemini", "from": "rag_engine", "to": "gemini", "label": "generate(prompt)", "variant": "emphasis" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Request Path",
+      "items": [
+        "Browser traffic enters through Nginx, the only publicly exposed port",
+        "The Streamlit server calls the API over the internal Docker network directly, not through Nginx's own /api/ proxy path",
+        "RAGEngine.answer() makes exactly one outbound network call: the Gemini generate(prompt) request"
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Retrieval Pipeline",
+      "items": [
+        "The question is expanded with statute wording before either retriever runs, so plain-language queries still match legal phrasing",
+        "Hybrid Search fuses FAISS semantic search with an in-memory BM25 keyword index by reciprocal rank fusion",
+        "An optional cross-encoder reranker re-scores the fused candidates; if it fails to load at startup, the API falls back to RRF ranking only"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Trust Boundaries & Resilience",
+      "items": [
+        "Everything except Nginx sits on a private Docker network with no public ingress",
+        "GEMINI_API_KEY leaves the process only on the single Gemini call; no other component talks to a third party",
+        "If Gemini errors or hits its quota, the API returns the retrieved statute sections directly instead of a written answer and flags the response as degraded rather than failing the request",
+        "The raw corpus JSON files are read once at startup to confirm the FAISS index matches current data, not on every query"
+      ]
+    }
+  ]
+}

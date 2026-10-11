@@ -1,0 +1,17 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "7c28473a-ab83-4e43-ab76-96ed3bf83075",
+  "status": "current",
+  "command": "deliver",
+  "type": "architecture",
+  "input": "C:\\Users\\chitr\\Desktop\\Legal-Chatbot\\.archify\\architecture-runtime-overview-20260930-000000\\candidate.json",
+  "output": "C:\\Users\\chitr\\Desktop\\Legal-Chatbot\\.archify\\architecture-runtime-overview-20260930-000000\\runtime-architecture.html",
+  "specification": {
+    "sha256": "12838ef395af8fee47e41ff4e68e1513d88d495aad612ad83406a623d41332b5",
+    "bytes": 4859
+  },
+  "artifact": {
+    "sha256": "526edaa6d3da8f5e178702652c3ade3d5bb5ddf898a0c6ddcbecbe7e4d665616",
+    "bytes": 765992
+  }
+}

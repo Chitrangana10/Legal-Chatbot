@@ -1,10 +1,17 @@
-"""Build a combined FAISS index and BM25 data for all raw statute sections."""
+"""Build a combined FAISS index and BM25 data for all raw statute sections.
+
+Every section is split into embed-sized chunks first (see
+backend/app/services/chunking.py, bug W3) so a long section's later
+sub-clauses are never silently truncated by the embedding model's 256-token
+limit. FAISS then holds one vector per CHUNK, not per section - a section that
+didn't need splitting still comes through as exactly one chunk, so short
+sections are unaffected.
+"""
 
 from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Any, Dict, List
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
 if str(PROJECT_ROOT) not in sys.path:
@@ -13,17 +20,10 @@ if str(PROJECT_ROOT) not in sys.path:
 from sentence_transformers import SentenceTransformer
 
 from backend.app.config import get_settings
-from backend.app.services.hybrid_search import build_bm25_index
+from backend.app.services.chunking import chunk_sections
+from backend.app.services.hybrid_search import build_text_for_embedding
 from backend.app.services.raw_corpus import load_raw_sections
 from backend.app.services.vector_store import VectorStore
-
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-
-
-def build_text_for_embedding(section: Dict[str, Any]) -> str:
-    """Create the embedding text for one statute section."""
-    return f"{section['act']} Section {section['section_number']}: {section['section_title']}\n{section['text']}"
 
 
 def main() -> None:
@@ -42,18 +42,19 @@ def main() -> None:
 
     print(f"Total combined section count: {len(sections)}")
 
-    texts = [build_text_for_embedding(section) for section in sections]
+    chunks = chunk_sections(sections)
+    split_count = sum(1 for c in chunks if c["chunk_count"] > 1)
+    print(f"Split into {len(chunks)} chunks ({split_count} chunks came from sections too long to embed whole).")
+
+    texts = [build_text_for_embedding(chunk) for chunk in chunks]
     model = SentenceTransformer(settings.embedding_model_name)
     vectors = model.encode(texts, convert_to_numpy=True, normalize_embeddings=False)
 
-    build_bm25_index(sections)
-    print(f"Built BM25 index over {len(sections)} combined sections.")
-
     store = VectorStore(dimension=int(vectors.shape[1]))
-    store.add(vectors, sections)
+    store.add(vectors, chunks)
     store.save(index_dir)
 
-    print(f"Saved {len(sections)} combined sections to {index_dir}")
+    print(f"Saved {len(chunks)} chunks to {index_dir}")
 
 
 if __name__ == "__main__":

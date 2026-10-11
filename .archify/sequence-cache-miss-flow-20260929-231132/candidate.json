@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Web Request with Cache-Aside Lookup",
+    "output": ".archify/sequence-cache-miss-flow-20260929-231132/cache-miss-flow.html",
+    "viewBox": [860, 540],
+    "column_fit": "spread",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "browser", "type": "external", "label": "Browser", "sublabel": "client" },
+    { "id": "api", "type": "backend", "label": "API", "sublabel": "request handler" },
+    { "id": "redis", "type": "database", "label": "Redis", "sublabel": "cache" },
+    { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "source of truth" }
+  ],
+  "segments": [
+    { "from": 150, "to": 250, "label": "Request" },
+    { "from": 255, "to": 365, "label": "Cache Miss Fallback" },
+    { "from": 370, "to": 400, "label": "Response" }
+  ],
+  "messages": [
+    { "id": "http-request", "from": "browser", "to": "api", "y": 165, "label": "HTTP request", "variant": "emphasis" },
+    { "id": "cache-get", "from": "api", "to": "redis", "y": 200, "label": "GET cached value", "variant": "default" },
+    { "id": "cache-miss", "from": "redis", "to": "api", "y": 235, "label": "miss", "variant": "return" },
+    { "id": "db-query", "from": "api", "to": "postgres", "y": 280, "label": "query row", "variant": "emphasis" },
+    { "id": "db-rows", "from": "postgres", "to": "api", "y": 315, "label": "rows", "variant": "return" },
+    { "id": "cache-set", "from": "api", "to": "redis", "y": 350, "label": "SET cached value", "variant": "dashed" },
+    { "id": "http-response", "from": "api", "to": "browser", "y": 385, "label": "HTTP response", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "browser", "from": 165, "to": 385, "type": "external" },
+    { "participant": "api", "from": 172, "to": 388, "type": "backend" },
+    { "participant": "redis", "from": 190, "to": 240, "type": "database" },
+    { "participant": "redis", "from": 340, "to": 360, "type": "database" },
+    { "participant": "postgres", "from": 270, "to": 325, "type": "database" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Cache Hit (not shown)",
+      "items": [
+        "If Redis had the key, the API would skip Postgres entirely",
+        "This is the cache-aside pattern: the app owns the caching logic"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Cache Miss Path",
+      "items": [
+        "Redis returns a miss instead of the value",
+        "The API falls back to PostgreSQL for the authoritative row",
+        "The API writes the result back to Redis before responding"
+      ]
+    }
+  ]
+}
