@@ -43,7 +43,7 @@ def test_login_load_history_new_chat_and_logout(monkeypatch):
     next(button for button in app.button if button.label == "Sign in").click().run()
     assert not app.exception
     assert len(app.chat_input) == 1
-    assert "login_password" not in app.session_state.filtered_state
+    assert "login_password" not in app.session_state
     app.button(key="chat-saved-chat").click().run()
     assert not app.exception
     assert app.session_state.history[0]["answer"] == "Saved answer"
