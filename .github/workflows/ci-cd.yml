@@ -4,7 +4,40 @@ on:
     branches: [main]
   workflow_dispatch:
 jobs:
+  auth-history-tests:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:17-alpine
+        env:
+          POSTGRES_USER: legal
+          POSTGRES_DB: legal_test
+          POSTGRES_PASSWORD: ci-test-only
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U legal -d legal_test"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install account test dependencies
+        run: python -m pip install fastapi httpx pytest streamlit requests 'SQLAlchemy>=2.0,<3' 'psycopg[binary]>=3.2,<4'
+      - name: Test login and history screens
+        run: python -m pytest tests/test_auth_frontend.py -p no:cacheprovider
+      - name: Test cache isolation and outage fallback
+        run: python -m pytest tests/test_answer_cache.py -p no:cacheprovider
+      - name: Test PostgreSQL storage
+        env:
+          TEST_DATABASE_URL: postgresql+psycopg://legal:ci-test-only@localhost:5432/legal_test
+        run: python -m pytest tests/test_auth_history.py -p no:cacheprovider
+
   build-test-push:
+    needs: auth-history-tests
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -39,10 +72,22 @@ jobs:
           cache-to: type=gha,mode=max,scope=frontend
       - name: Smoke test - backend starts and responds
         run: |
+          docker network create smoke-network
+          trap 'docker rm -f test-backend test-postgres >/dev/null 2>&1 || true; docker network rm smoke-network >/dev/null 2>&1 || true' EXIT
+          docker run -d --name test-postgres --network smoke-network \
+            --env POSTGRES_USER=legal --env POSTGRES_DB=legal_smoke \
+            --env POSTGRES_PASSWORD=ci-smoke-only postgres:17-alpine
+          for i in $(seq 1 30); do
+            if docker exec test-postgres pg_isready -U legal -d legal_smoke; then break; fi
+            sleep 2
+          done
           docker run -d --name test-backend \
+            --network smoke-network \
             -p 8000:8000 \
             -v ${{ github.workspace }}/backend/data:/app/backend/data \
             --env GEMINI_API_KEY=dummy-key-for-smoke-test \
+            --env DATABASE_URL=postgresql+psycopg://legal:ci-smoke-only@test-postgres:5432/legal_smoke \
+            --env ENABLE_ANSWER_CACHE=false \
             chitranganalaxkar/legal-chatbot-backend:latest
           # Cold start loads the embedding model, FAISS index, and builds a
           # BM25 index over ~3,000 sections inside FastAPI's lifespan hook -
@@ -50,7 +95,7 @@ jobs:
           # a fixed short sleep isn't reliable. Poll instead, up to 2 minutes.
           healthy=false
           for i in $(seq 1 24); do
-            if curl --fail --silent http://localhost:8000/health; then
+            if curl --fail --silent http://localhost:8000/health | grep -Eq '"index_loaded":[[:space:]]*true'; then
               echo "Backend is up."
               healthy=true
               break
@@ -98,8 +143,10 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
             cd ~/Legal-Chatbot
             git pull origin main
+            python3 backend/scripts/prepare_deployment_env.py
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
             docker image prune -f
@@ -110,8 +157,9 @@ jobs:
           username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
+            set -e
             for i in $(seq 1 24); do
-              if curl --fail --silent http://localhost/api/health; then
+              if curl --fail --silent http://localhost/api/health | grep -Eq '"index_loaded":[[:space:]]*true'; then
                 echo "Backend is up (via nginx)."
                 exit 0
               fi

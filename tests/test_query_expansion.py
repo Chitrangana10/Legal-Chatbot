@@ -51,3 +51,10 @@ def test_aliases_only_cover_wording_the_statute_does_not_use() -> None:
     query. These are all present in the corpus verbatim."""
     for already_in_the_law in ("bail", "dowry", "theft", "murder", "arrest", "defamation"):
         assert already_in_the_law not in ALIASES
+
+
+def test_valid_licence_question_matches_penalty_wording():
+    for spelling in ("licence", "license"):
+        query = f"What is the penalty for driving without a valid {spelling}?"
+        expanded = expand_query(query)
+        assert "driving vehicles in contravention of section 3 or section 4" in expanded

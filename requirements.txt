@@ -13,3 +13,6 @@ requests
 beautifulsoup4
 pytest
 numpy
+SQLAlchemy>=2.0,<3
+psycopg[binary]>=3.2,<4
+redis>=5,<8

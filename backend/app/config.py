@@ -22,6 +22,12 @@ class Settings(BaseSettings):
     app_name: str = Field(default="Intelligent Legal RAG System", validation_alias="APP_NAME")
     environment: str = Field(default="development", validation_alias="ENVIRONMENT")
     log_level: str = Field(default="INFO", validation_alias="LOG_LEVEL")
+    database_url: str = Field(default="postgresql+psycopg://legal:local-development-only@127.0.0.1:5433/legal_chatbot", validation_alias="DATABASE_URL")
+    session_hours: int = Field(default=24, ge=1, le=168, validation_alias="SESSION_HOURS")
+    redis_url: str = Field(default="redis://127.0.0.1:6379/0", validation_alias="REDIS_URL")
+    enable_answer_cache: bool = Field(default=True, validation_alias="ENABLE_ANSWER_CACHE")
+    answer_cache_ttl_seconds: int = Field(default=86400, ge=1, validation_alias="ANSWER_CACHE_TTL_SECONDS")
+    answer_cache_version: str = Field(default="v1", validation_alias="ANSWER_CACHE_VERSION")
 
     together_api_key: Optional[str] = Field(default=None, validation_alias="TOGETHER_API_KEY")
     google_api_key: Optional[str] = Field(default=None, validation_alias="GOOGLE_API_KEY")

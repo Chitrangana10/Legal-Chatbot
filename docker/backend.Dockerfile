@@ -13,6 +13,8 @@ RUN pip install --no-cache-dir -r requirements-backend.txt
 # out and fail.
 ARG EMBEDDING_MODEL_NAME=sentence-transformers/all-MiniLM-L6-v2
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('${EMBEDDING_MODEL_NAME}')"
+ARG RERANKER_MODEL_NAME=cross-encoder/ms-marco-MiniLM-L-6-v2
+RUN python -c "from sentence_transformers import CrossEncoder; CrossEncoder('${RERANKER_MODEL_NAME}')"
 
 COPY backend/ ./backend/
 
