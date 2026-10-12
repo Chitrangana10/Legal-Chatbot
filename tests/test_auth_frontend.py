@@ -1,9 +1,12 @@
 """Exercise account screens and history navigation with a fake API."""
 
 from unittest.mock import Mock
+from pathlib import Path
 
 import requests
 from streamlit.testing.v1 import AppTest
+
+APP_PATH = str(Path(__file__).resolve().parents[1] / "frontend" / "streamlit_app.py")
 
 
 def response(payload=None, status=200):
@@ -32,7 +35,7 @@ def test_login_load_history_new_chat_and_logout(monkeypatch):
         ]})
 
     monkeypatch.setattr(requests, "request", api)
-    app = AppTest.from_file("frontend/streamlit_app.py").run()
+    app = AppTest.from_file(APP_PATH).run()
     assert not app.exception
     assert len(app.chat_input) == 0
     app.text_input(key="login_email").set_value("alice@example.com")
@@ -56,7 +59,7 @@ def test_login_load_history_new_chat_and_logout(monkeypatch):
 
 def test_expired_session_clears_private_history(monkeypatch):
     monkeypatch.setattr(requests, "request", lambda *args, **kwargs: response({"detail": "Expired"}, 401))
-    app = AppTest.from_file("frontend/streamlit_app.py")
+    app = AppTest.from_file(APP_PATH)
     app.session_state.access_token = "expired"
     app.session_state.user = {"email": "alice@example.com"}
     app.session_state.history = [{"question": "Private", "answer": "Private answer", "sources": []}]
@@ -70,7 +73,7 @@ def test_expired_session_clears_private_history(monkeypatch):
 def test_registration_mismatch_does_not_call_api(monkeypatch):
     api = Mock()
     monkeypatch.setattr(requests, "request", api)
-    app = AppTest.from_file("frontend/streamlit_app.py").run()
+    app = AppTest.from_file(APP_PATH).run()
     app.text_input(key="register_email").set_value("alice@example.com")
     app.text_input(key="register_password").set_value("a-long-test-password")
     app.text_input(key="register_confirm").set_value("different-password")
