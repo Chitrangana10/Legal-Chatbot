@@ -149,6 +149,8 @@ jobs:
             python3 backend/scripts/prepare_deployment_env.py
             docker compose -f docker-compose.prod.yml pull
             docker compose -f docker-compose.prod.yml up -d
+            docker compose -f docker-compose.prod.yml exec -T nginx nginx -t
+            docker compose -f docker-compose.prod.yml restart nginx
             docker image prune -f
       - name: Verify deployment
         uses: appleboy/ssh-action@v1.0.3
